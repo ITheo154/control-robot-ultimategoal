@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1569766603/FtcRobotController.iml" filepath="$PROJECT_DIR$/.idea/modules/1569766603/FtcRobotController.iml" group="miscare robot/FtcRobotController" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TeamCode.iml" filepath="$PROJECT_DIR$/.idea/modules/TeamCode.iml" group="miscare robot/TeamCode" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/799402699/miscare_robot.iml" filepath="$PROJECT_DIR$/.idea/modules/799402699/miscare_robot.iml" group="miscare_robot" />
+    </modules>
+  </component>
+</project>
