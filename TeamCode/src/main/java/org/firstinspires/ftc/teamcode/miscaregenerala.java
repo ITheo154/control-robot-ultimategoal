@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -28,7 +26,8 @@ public class miscaregenerala extends LinearOpMode {
        dreaptaspate = hardwareMap.dcMotor.get("dreaptaspate");
        brat = hardwareMap.dcMotor.get("brat");
        servo1 = hardwareMap.servo.get("servobrat");
-       yeeter = =hardwareMap.dcMotor.get("yeeter");
+       yeeter = hardwareMap.dcMotor.get("yeeter");
+       brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
        // hub 1 
        // hub 2
@@ -51,11 +50,9 @@ public class miscaregenerala extends LinearOpMode {
             }
             else if (gamepad1.x){
                 brat.setPower(0.3);
-                brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
             else if (gamepad1.y){
                 brat.setPower(-0.3);
-                brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
             else {
                 brat.setPower(0);
@@ -69,11 +66,9 @@ public class miscaregenerala extends LinearOpMode {
             else if(gamepad1.b){
                 servo1.setPosition(0.6);
             }
-
         }
-
-
     }
+
     /**
      * Control a mecanum drive base with three double inputs
      *
@@ -103,7 +98,5 @@ public class miscaregenerala extends LinearOpMode {
         stangaspate.setPower(v3);
         dreaptaspate.setPower(v4);
     }
-
-
 
 }
