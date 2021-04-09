@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,62 +16,67 @@ public class miscaregenerala extends LinearOpMode {
     DcMotor dreaptafata;
     DcMotor stangaspate;
     DcMotor dreaptaspate;
-
-    DcMotor yeeter;
+    DcMotor rampa;
     @Override
-    public void runOpMode() throws InterruptedException {
-       stangafata = hardwareMap.dcMotor.get("stangafata");
-       dreaptafata = hardwareMap.dcMotor.get("dreaptafata");
-       stangaspate = hardwareMap.dcMotor.get("stangaspate");
-       dreaptaspate = hardwareMap.dcMotor.get("dreaptaspate");
-       brat = hardwareMap.dcMotor.get("brat");
-       servo1 = hardwareMap.servo.get("servobrat");
-       yeeter = =hardwareMap.dcMotor.get("yeeter");
+    public void runOpMode() {
+        stangafata = hardwareMap.dcMotor.get("stangafata");
+        dreaptafata = hardwareMap.dcMotor.get("dreaptafata");
+        stangaspate = hardwareMap.dcMotor.get("stangaspate");
+        dreaptaspate = hardwareMap.dcMotor.get("dreaptaspate");
+        brat = hardwareMap.dcMotor.get("brat");
+        servo1 = hardwareMap.servo.get("servobrat");
+        rampa = hardwareMap.dcMotor.get("rampa");
 
-       // hub 1 
-       // hub 2
+        brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        // hub 1
+        // hub 2
 
         waitForStart();
 
-        while(opModeIsActive()){
+        while (opModeIsActive()) {
             //control robot
-            double x = -gamepad1.left_stick_x;
+            double x = gamepad1.left_stick_x;
             double y = gamepad1.left_stick_y;
             double turn = -gamepad1.right_stick_x;
             mecanum(x, y, turn);
 
             //control brat
-            if (gamepad1.left_bumper){
+            if (gamepad1.left_bumper) {
                 brat.setPower(-0.9);
-            }
-            else if(gamepad1.right_bumper){
+            } else if (gamepad1.right_bumper) {
                 brat.setPower(0.9);
-            }
-            else if (gamepad1.x){
+            } else if (gamepad1.x) {
                 brat.setPower(0.3);
-                brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-            else if (gamepad1.y){
+            } else if (gamepad1.y) {
                 brat.setPower(-0.3);
-                brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            }
-            else {
+            } else {
                 brat.setPower(0);
             }
 
             //control servo v2
 
-            if (gamepad1.a){
+            if (gamepad1.a) {
                 servo1.setPosition(0);
+            } else if (gamepad1.b) {
+                servo1.setPosition(-0.7);
             }
-            else if(gamepad1.b){
-                servo1.setPosition(0.6);
+
+
+            if (gamepad1.dpad_left) {
+                rampa.setPower(1);
+            } else {
+                rampa.setPower(0);
             }
 
         }
 
 
     }
+
+
+
+
     /**
      * Control a mecanum drive base with three double inputs
      *
@@ -99,11 +102,9 @@ public class miscaregenerala extends LinearOpMode {
 
 
         stangafata.setPower(v1);
-        dreaptafata.setPower(v2);
+        dreaptafata.setPower(-v2);
         stangaspate.setPower(v3);
-        dreaptaspate.setPower(v4);
+        dreaptaspate.setPower(-v4);
     }
-
-
 
 }
