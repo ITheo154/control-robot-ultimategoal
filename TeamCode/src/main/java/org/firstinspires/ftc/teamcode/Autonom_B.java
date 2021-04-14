@@ -14,8 +14,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous(name = "UltimateGoalAutonomous", group = "FTC")
-public class autonom extends LinearOpMode {
+
+@Autonomous(name = "Autonom-B", group = "FTC")
+public class Autonom_B extends LinearOpMode {
 
     private BNO055IMU imu;
 
@@ -90,14 +91,9 @@ public class autonom extends LinearOpMode {
 
     private void DoAutonomusStuff(boolean didFunctionRun){
         if(!didFunctionRun){
-            // position 1(A) pos 2(B) pos 3(C)
-            deliverWobble(1);
-            rampa.setPower(1);
-            moveToPosition(-75, 1);
-            turnWithEncoder(180);
-            rampa.setPower(0);
-            moveToPosition(120, 1);
+            deliverWobbleB();
             shootPowershot();
+            navigateToStart();
 
             didFunctionRun = true;
 
@@ -359,48 +355,41 @@ public class autonom extends LinearOpMode {
 
     }
 
-    public void deliverWobble(int position){
+    public void deliverWobbleB(){
         servo1.setPosition(0.65);
         sleep(100);
-        if (position == 1){
-            moveToPosition(20, 1);
-            strafeToPosition(15, 1);
-        }
-        else if (position == 2){
-            moveToPosition(35, 1);
-            strafeToPosition(30, 1);
-        }
-        else if (position == 3){
-            moveToPosition(45, 1);
-            strafeToPosition(10,1);
-        }
+        moveToPosition(45, 1);
+        strafeToPosition(30, 1);
+        // move to square B
+
+
         servo1.setPosition(0);
         sleep(100);
         brat.setPower(1);
         sleep(100);
+        //put wobble down
+
         turnWithEncoder(180);
         rampa.setPower(1);
+        strafeToPosition(30, 1);
         moveToPosition(-75, 1);
+        sleep(100);
+        //go back to ring spot
         turnWithEncoder(180);
         rampa.setPower(0);
         moveToPosition(120, 1);
+        // go to shoting line
     }
 
     public void shootHighGoal(){
-        rampa.setPower(1);
-        moveToPosition(65, 1);
-        moveToPosition(85, 1);
-        for (int i = 0; i<=3; i++) {
+        for (int i = 0; i<3; i++) {
             lansator.setPower(1);
             sleep(20);
         }
-
     }
 
     public void shootPowershot(){
-        rampa.setPower(1);
-        moveToPosition(65, 1);
-        moveToPosition(85, 1);
+        strafeToPosition(20, 1);
         for (int i = 0; i<=3; i++) {
             lansator.setPower(1);
             sleep(20);
@@ -412,8 +401,10 @@ public class autonom extends LinearOpMode {
     public void navigateToStart(){
         moveToPosition(-120, 1);
         strafeToPosition(20, 1);
+        idle();
     }
 
 
 
 }
+
