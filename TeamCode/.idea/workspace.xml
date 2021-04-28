@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee366f10-e307-46da-ba1b-c370eea3574d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/firstinspires/ftc/teamcode/miscaregenerala.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/firstinspires/ftc/teamcode/miscaregenerala.java" afterDir="false" />
     </list>
@@ -35,7 +34,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/main/java/org/firstinspires/ftc/teamcode" />
   </component>
   <component name="ProjectId" id="1oLDIDsKsyKhVAm6Hr0jvrf6PWs" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -46,7 +45,9 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="full.screen.before.presentation.mode" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
@@ -124,10 +125,22 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="679" y="165" key="#TeamCode" timestamp="1618481281222">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="679" y="165" key="#TeamCode/0.0.1920.1040@0.0.1920.1040" timestamp="1618481281222" />
     <state x="697" y="323" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1617884709598">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="697" y="323" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1617884709598" />
+    <state x="551" y="114" key="CommitChangelistDialog2" timestamp="1618381140090">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="551" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1618381140090" />
+    <state x="184" y="86" key="DiffContextDialog" timestamp="1618381138981">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="184" y="86" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1618381138981" />
     <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1613141084409">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -152,9 +165,13 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="184" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1617877402992" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1616594259477">
+    <state x="769" y="437" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1618381124834">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1616594259477" />
+    <state x="769" y="437" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1618381124834" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1618036920967">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1618036920967" />
   </component>
 </project>

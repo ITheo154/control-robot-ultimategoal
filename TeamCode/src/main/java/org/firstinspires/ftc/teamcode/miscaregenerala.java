@@ -10,13 +10,17 @@ import java.nio.channels.ShutdownChannelGroupException;
 @TeleOp
 public class miscaregenerala extends LinearOpMode {
     DcMotor brat;
-    Servo servo1;
+    Servo servo_brat;
+    Servo servo_rampa;
+
+    DcMotor lansator;
 
     DcMotor stangafata;
     DcMotor dreaptafata;
     DcMotor stangaspate;
     DcMotor dreaptaspate;
-    DcMotor rampa;
+    DcMotor hex_rampa;
+
     @Override
     public void runOpMode() {
         stangafata = hardwareMap.dcMotor.get("stangafata");
@@ -24,8 +28,11 @@ public class miscaregenerala extends LinearOpMode {
         stangaspate = hardwareMap.dcMotor.get("stangaspate");
         dreaptaspate = hardwareMap.dcMotor.get("dreaptaspate");
         brat = hardwareMap.dcMotor.get("brat");
-        servo1 = hardwareMap.servo.get("servobrat");
-        rampa = hardwareMap.dcMotor.get("rampa");
+        servo_brat = hardwareMap.servo.get("servobrat");
+        servo_rampa = hardwareMap.servo.get("servorampa");
+        hex_rampa = hardwareMap.dcMotor.get("rampa");
+
+        lansator = hardwareMap.dcMotor.get("lansator");
 
         brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -35,11 +42,14 @@ public class miscaregenerala extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+
             //control robot
-            double x = gamepad1.left_stick_x;
-            double y = gamepad1.left_stick_y;
-            double turn = -gamepad1.right_stick_x;
-            mecanum(x, y, turn);
+            double forward = -gamepad1.left_stick_y;
+            double turn = -gamepad1.left_stick_x; // turn
+            double strafe = gamepad1.right_stick_x;  //strafe
+              //Forward
+
+            mecanum(strafe, forward, turn);
 
             //control brat
             if (gamepad1.left_bumper) {
@@ -57,16 +67,25 @@ public class miscaregenerala extends LinearOpMode {
             //control servo v2
 
             if (gamepad1.a) {
-                servo1.setPosition(0);
+                servo_brat.setPosition(0);
             } else if (gamepad1.b) {
-                servo1.setPosition(-0.7);
+                servo_brat.setPosition(0.5);
+            }
+
+            if (gamepad1.dpad_up){
+                servo_rampa.setPosition(0);
+            }
+            else if (gamepad1.dpad_down){
+                servo_rampa.setPosition(1);
             }
 
 
+
+
             if (gamepad1.dpad_left) {
-                rampa.setPower(1);
+                hex_rampa.setPower(1);
             } else {
-                rampa.setPower(0);
+                hex_rampa.setPower(0);
             }
 
         }
