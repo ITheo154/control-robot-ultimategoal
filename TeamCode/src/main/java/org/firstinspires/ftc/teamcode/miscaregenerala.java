@@ -22,6 +22,7 @@ public class miscaregenerala extends LinearOpMode {
     DcMotor hex_rampa;
 
     @Override
+<<<<<<< HEAD
     public void runOpMode() {
         stangafata = hardwareMap.dcMotor.get("stangafata");
         dreaptafata = hardwareMap.dcMotor.get("dreaptafata");
@@ -38,6 +39,20 @@ public class miscaregenerala extends LinearOpMode {
 
         // hub 1
         // hub 2
+=======
+    public void runOpMode() throws InterruptedException {
+       stangafata = hardwareMap.dcMotor.get("stangafata");
+       dreaptafata = hardwareMap.dcMotor.get("dreaptafata");
+       stangaspate = hardwareMap.dcMotor.get("stangaspate");
+       dreaptaspate = hardwareMap.dcMotor.get("dreaptaspate");
+       brat = hardwareMap.dcMotor.get("brat");
+       servo1 = hardwareMap.servo.get("servobrat");
+       yeeter = hardwareMap.dcMotor.get("yeeter");
+       brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+       // hub 1 
+       // hub 2
+>>>>>>> bfffd2f06596b3c53786bf81e66034e1528a0ae6
 
         waitForStart();
 
@@ -58,9 +73,17 @@ public class miscaregenerala extends LinearOpMode {
                 brat.setPower(0.9);
             } else if (gamepad1.x) {
                 brat.setPower(0.3);
+<<<<<<< HEAD
             } else if (gamepad1.y) {
                 brat.setPower(-0.3);
             } else {
+=======
+            }
+            else if (gamepad1.y){
+                brat.setPower(-0.3);
+            }
+            else {
+>>>>>>> bfffd2f06596b3c53786bf81e66034e1528a0ae6
                 brat.setPower(0);
             }
 
@@ -87,15 +110,15 @@ public class miscaregenerala extends LinearOpMode {
             } else {
                 hex_rampa.setPower(0);
             }
-
         }
-
-
     }
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> bfffd2f06596b3c53786bf81e66034e1528a0ae6
     /**
      * Control a mecanum drive base with three double inputs
      *
@@ -126,4 +149,8 @@ public class miscaregenerala extends LinearOpMode {
         dreaptaspate.setPower(-v4);
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> bfffd2f06596b3c53786bf81e66034e1528a0ae6
