@@ -11,6 +11,8 @@ import java.nio.channels.ShutdownChannelGroupException;
 public class miscaregenerala extends LinearOpMode {
     DcMotor brat;
     Servo servo_brat;
+
+
     Servo servo_rampa;
 
     DcMotor lansator;
@@ -35,7 +37,14 @@ public class miscaregenerala extends LinearOpMode {
         lansator = hardwareMap.dcMotor.get("lansator");
 
         brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        
+        
+        stangafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        dreaptafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);;
+        stangaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);;
+        dreaptaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);;
 
+        
         // hub 1
         // hub 2
 
@@ -58,17 +67,9 @@ public class miscaregenerala extends LinearOpMode {
                 brat.setPower(0.9);
             } else if (gamepad1.x) {
                 brat.setPower(0.3);
-<<<<<<< HEAD
             } else if (gamepad1.y) {
                 brat.setPower(-0.3);
             } else {
-=======
-            }
-            else if (gamepad1.y){
-                brat.setPower(-0.3);
-            }
-            else {
->>>>>>> bfffd2f06596b3c53786bf81e66034e1528a0ae6
                 brat.setPower(0);
             }
 
@@ -81,10 +82,15 @@ public class miscaregenerala extends LinearOpMode {
             }
 
             if (gamepad1.dpad_up){
-                servo_rampa.setPosition(0);
+                servo_rampa.setPosition(1);
+                sleep(2420);
             }
             else if (gamepad1.dpad_down){
-                servo_rampa.setPosition(1);
+                servo_rampa.setPosition(0);
+                sleep(2420);
+            }
+            else {
+                servo_rampa.setPosition(0.5);
             }
 
 
@@ -98,12 +104,6 @@ public class miscaregenerala extends LinearOpMode {
         }
     }
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> bfffd2f06596b3c53786bf81e66034e1528a0ae6
     /**
      * Control a mecanum drive base with three double inputs
      *
@@ -134,8 +134,6 @@ public class miscaregenerala extends LinearOpMode {
         dreaptaspate.setPower(-v4);
     }
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> bfffd2f06596b3c53786bf81e66034e1528a0ae6
+
+

@@ -96,7 +96,7 @@ public class autonom extends LinearOpMode {
     private void DoAutonomusStuff(boolean didFunctionRun){
         if(!didFunctionRun){
             // position 1(A) pos 2(B) pos 3(C)
-            deliverWobble();
+            deliverWobble(1);
             shootPowershot();
             navigateToStart();
             
@@ -361,11 +361,11 @@ public class autonom extends LinearOpMode {
     }
 
     public void deliverWobble(int position){
-        servo1.setPosition(0.65);
+        servo_brat.setPosition(0.65);
         if (position == 1){
             moveToPosition(180, 1);
             strafeToPosition(50, 0.8);
-            servo1.setPosition(0);
+            servo_brat.setPosition(0);
             brat.setPower(1);
             sleep(100);
             
@@ -377,7 +377,7 @@ public class autonom extends LinearOpMode {
         else if (position == 2){
             moveToPosition(230, 1);
             strafeToPosition(-20, 0.8);
-            servo1.setPosition(0);
+            servo_brat.setPosition(0);
             brat.setPower(1);
             sleep(100);
 
@@ -391,7 +391,7 @@ public class autonom extends LinearOpMode {
         else if (position == 3){
             moveToPosition(320, 1);
             strafeToPosition(50,0.8);
-            servo1.setPosition(0);
+            servo_brat.setPosition(0);
             brat.setPower(1);
             sleep(100);
         }
