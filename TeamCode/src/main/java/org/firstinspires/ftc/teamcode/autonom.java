@@ -34,7 +34,6 @@ public class autonom extends LinearOpMode {
     DcMotor rampa;
     DcMotor lansator;
 
-
     private boolean didFunctionRun = false;
 
     private double width = 16.0; //inches
@@ -62,26 +61,18 @@ public class autonom extends LinearOpMode {
         rampa = hardwareMap.dcMotor.get("rampa");
         lansator = hardwareMap.dcMotor.get("lansator");
 
-
-
-
-
         stangafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dreaptafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         stangaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dreaptaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
-
         reversePolarity();
-
 
         //CALIBRARE GYRO START
         while (!isStopRequested() && !imu.isGyroCalibrated()) {
             sleep(50);
             idle();
         }
-
 
         telemetry.addData("Mode", "waiting for start");
         telemetry.addData("IMU Calibration Status :", imu.getCalibrationStatus().toString());
@@ -145,13 +136,12 @@ public class autonom extends LinearOpMode {
         stangaspate.setPower(0);
         return;
     }
-    //
+
     /*
     This function uses the Expansion Hub IMU Integrated Gyro to turn a precise number of degrees (+/- 5).
     Degrees should always be positive, make speedDirection negative to turn left.
      */
     public void turnWithGyro(double degrees, double speedDirection){
-        //<editor-fold desc="Initialize">
         angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double yaw = -angles.firstAngle;//make this negative
         telemetry.addData("Speed Direction", speedDirection);
@@ -163,37 +153,25 @@ public class autonom extends LinearOpMode {
         //
         double first;
         double second;
-        //</editor-fold>
-        //
         if (speedDirection > 0){//set target positions
-            //<editor-fold desc="turn right">
             if (degrees > 10){
                 first = (degrees - 10) + devertify(yaw);
-                second = degrees + devertify(yaw);
-            }else{
+            } else{
                 first = devertify(yaw);
-                second = degrees + devertify(yaw);
             }
-            //</editor-fold>
+            second = degrees + devertify(yaw);
         }else{
-            //<editor-fold desc="turn left">
             if (degrees > 10){
                 first = devertify(-(degrees - 10) + devertify(yaw));
-                second = devertify(-degrees + devertify(yaw));
-            }else{
+            } else{
                 first = devertify(yaw);
-                second = devertify(-degrees + devertify(yaw));
             }
-            //
-            //</editor-fold>
+            second = devertify(-degrees + devertify(yaw));
         }
         //
-        //<editor-fold desc="Go to position">
-        Double firsta = convertify(first - 5);//175
-        Double firstb = convertify(first + 5);//-175
-        //
+        double firsta = convertify(first - 5);//175
+        double firstb = convertify(first + 5);//-175
         turnWithEncoder(speedDirection);
-        //
         if (Math.abs(firsta - firstb) < 11) {
             while (!(firsta < yaw && yaw < firstb) && opModeIsActive()) {//within range?
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -217,8 +195,8 @@ public class autonom extends LinearOpMode {
             }
         }
         //
-        Double seconda = convertify(second - 5);//175
-        Double secondb = convertify(second + 5);//-175
+        double seconda = convertify(second - 5);//175
+        double secondb = convertify(second + 5);//-175
         //
         turnWithEncoder(speedDirection / 3);
         //
@@ -294,15 +272,7 @@ public class autonom extends LinearOpMode {
 
         return;
     }
-    //
-    /*
-    A tradition within the Thunder Pengwins code, we always start programs with waitForStartify,
-    our way of adding personality to our programs.
-     */
-    public void waitForStartify(){
-        waitForStart();
-    }
-    //
+
     /*
     These functions are used in the turnWithGyro function to ensure inputs
     are interpreted properly.

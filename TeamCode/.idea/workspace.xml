@@ -5,17 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee366f10-e307-46da-ba1b-c370eea3574d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/firstinspires/ftc/teamcode/Autonom_A.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/firstinspires/ftc/teamcode/Autonom_B.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/firstinspires/ftc/teamcode/Autonom_C.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/firstinspires/ftc/teamcode/autonom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/firstinspires/ftc/teamcode/autonom.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="ZY2244HWP9" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />

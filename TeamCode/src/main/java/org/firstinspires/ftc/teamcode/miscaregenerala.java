@@ -5,8 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import java.nio.channels.ShutdownChannelGroupException;
-
 @TeleOp
 public class miscaregenerala extends LinearOpMode {
     DcMotor brat;
@@ -15,50 +13,50 @@ public class miscaregenerala extends LinearOpMode {
 
     Servo servo_rampa;
 
+    Servo servo_ghidaj;
+
     DcMotor lansator;
 
     DcMotor stangafata;
     DcMotor dreaptafata;
     DcMotor stangaspate;
     DcMotor dreaptaspate;
-    DcMotor hex_rampa;
+    DcMotor intake;
 
     @Override
     public void runOpMode() {
-        stangafata = hardwareMap.dcMotor.get("stangafata");
-        dreaptafata = hardwareMap.dcMotor.get("dreaptafata");
-        stangaspate = hardwareMap.dcMotor.get("stangaspate");
-        dreaptaspate = hardwareMap.dcMotor.get("dreaptaspate");
+        stangafata = hardwareMap.dcMotor.get("stangafata");         // hub 1 port 0
+        dreaptafata = hardwareMap.dcMotor.get("dreaptafata");       // hub 1 port 1
+        stangaspate = hardwareMap.dcMotor.get("stangaspate");       // hub 1 port 2
+        dreaptaspate = hardwareMap.dcMotor.get("dreaptaspate");     // hub 1 port 3
+
         brat = hardwareMap.dcMotor.get("brat");
         servo_brat = hardwareMap.servo.get("servobrat");
         servo_rampa = hardwareMap.servo.get("servorampa");
-        hex_rampa = hardwareMap.dcMotor.get("rampa");
+        intake = hardwareMap.dcMotor.get("intake");
+        servo_ghidaj = hardwareMap.servo.get("servoghidaj");
 
         lansator = hardwareMap.dcMotor.get("lansator");
 
         brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        
         
         stangafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dreaptafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);;
         stangaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);;
         dreaptaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);;
 
-        
-        // hub 1
-        // hub 2
-
         waitForStart();
 
         while (opModeIsActive()) {
 
             //control robot
-            double forward = -gamepad1.left_stick_y;
-            double turn = -gamepad1.left_stick_x; // turn
-            double strafe = gamepad1.right_stick_x;  //strafe
-              //Forward
+            double y = -gamepad1.left_stick_y;
+            double x = gamepad1.left_stick_x; // turn
+            double turn = -gamepad1.right_stick_x;  //strafe
 
-            mecanum(strafe, forward, turn);
+            mecanum(x, y, turn);
+
+            lansator.setPower(gamepad1.right_trigger);
 
             //control brat
             if (gamepad1.left_bumper) {
@@ -74,7 +72,6 @@ public class miscaregenerala extends LinearOpMode {
             }
 
             //control servo v2
-
             if (gamepad1.a) {
                 servo_brat.setPosition(0);
             } else if (gamepad1.b) {
@@ -92,14 +89,18 @@ public class miscaregenerala extends LinearOpMode {
             else {
                 servo_rampa.setPosition(0.5);
             }
-
-
-
-
+            if (gamepad1.left_trigger > 0){
+                servo_ghidaj.setPosition(1);
+                intake.setPower(1);
+            }
+            else {
+                servo_ghidaj.setPosition(0.5);
+                intake.setPower(0);
+            }
             if (gamepad1.dpad_left) {
-                hex_rampa.setPower(1);
+                intake.setPower(1);
             } else {
-                hex_rampa.setPower(0);
+                intake.setPower(0);
             }
         }
     }
