@@ -1,0 +1,3 @@
+0 Caz 0 inele - A
+1 Caz 1 inele - B
+2 Caz 4 inele - C

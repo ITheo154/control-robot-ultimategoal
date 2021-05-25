@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
@@ -38,70 +39,128 @@ public class miscaregenerala extends LinearOpMode {
 
         lansator = hardwareMap.dcMotor.get("lansator");
 
-        brat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        
+        dreaptafata.setDirection(DcMotorSimple.Direction.FORWARD);
+        dreaptaspate.setDirection(DcMotorSimple.Direction.FORWARD);
+        stangafata.setDirection(DcMotorSimple.Direction.REVERSE);
+        stangaspate.setDirection(DcMotorSimple.Direction.REVERSE);
+
         stangafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        dreaptafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);;
-        stangaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);;
-        dreaptaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);;
+        dreaptafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        stangaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        dreaptaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         waitForStart();
-
+        double slower = 1;
+        boolean fullIntake = true;
         while (opModeIsActive()) {
+            /**
+             * Gamepad 1 -----------------------------------------------
+             */
 
-            //control robot
-            double y = -gamepad1.left_stick_y;
-            double x = gamepad1.left_stick_x; // turn
-            double turn = -gamepad1.right_stick_x;  //strafe
+            /**
+             * Miscare robot
+             */
+            double x = -gamepad1.left_stick_x;
+            double y = gamepad1.left_stick_y;
+            double turn = -gamepad1.right_stick_x;
 
+            if (gamepad1.right_bumper) {
+                if (slower == 1) {
+                    slower = 2;
+                } else {
+                    slower = 1;
+                }
+            }
             mecanum(x, y, turn);
 
-            lansator.setPower(gamepad1.right_trigger);
+            /**
+             * Servo Brat
+             */
+            if (gamepad2.right_trigger > 0)
+                servo_brat.setPosition(0.65);
+            if (gamepad2.left_trigger > 0)
+                servo_brat.setPosition(0);
 
-            //control brat
-            if (gamepad1.left_bumper) {
-                brat.setPower(-0.9);
-            } else if (gamepad1.right_bumper) {
-                brat.setPower(0.9);
-            } else if (gamepad1.x) {
-                brat.setPower(0.3);
-            } else if (gamepad1.y) {
+            /**
+             * ---------------------------------------------------------
+             */
+
+
+            /**
+             * Gamepad 2 -----------------------------------------------
+             */
+
+            /**
+             * Lansator
+             */
+            if (gamepad2.x) {
+                //if (lansator.getPower() == 0) {
+                lansator.setPower(0.65);
+                //} else if (lansator.getPower() <= 0.7) {
+                //    lansator.setPower(lansator.getPower() + 0.1);
+                //}
+            }
+            if (gamepad2.b) {
+                //if (lansator.getPower() >= 0.1) {
+                //   lansator.setPower(lansator.getPower() - 0.1);
+                //}
+                lansator.setPower(0);
+            }
+            if (lansator.getPower() < 0)
+                lansator.setPower(0);
+
+
+            /**
+             * Brat Wobble
+             */
+            if (gamepad2.left_bumper) {
+                brat.setPower(-1);
+            } else if (gamepad2.right_bumper) {
+                brat.setPower(1);
+            } else if (gamepad2.a) {
+                brat.setPower(0.5);
+            } else if (gamepad2.y) {
                 brat.setPower(-0.3);
             } else {
                 brat.setPower(0);
             }
 
-            //control servo v2
-            if (gamepad1.a) {
-                servo_brat.setPosition(0);
-            } else if (gamepad1.b) {
-                servo_brat.setPosition(0.5);
-            }
+            telemetry.addData("Brat", brat.getCurrentPosition());
+            telemetry.update();
 
-            if (gamepad1.dpad_up){
+            /**
+             * Rampa
+             */
+            if (gamepad2.dpad_up) {
                 servo_rampa.setPosition(1);
-                sleep(2420);
-            }
-            else if (gamepad1.dpad_down){
+            } else if (gamepad2.dpad_down) {
                 servo_rampa.setPosition(0);
-                sleep(2420);
-            }
-            else {
+            } else {
                 servo_rampa.setPosition(0.5);
             }
-            if (gamepad1.left_trigger > 0){
-                servo_ghidaj.setPosition(1);
-                intake.setPower(1);
+
+            /**
+             * Intake
+             */
+            if (gamepad2.right_stick_button) {
+                fullIntake = !fullIntake;
             }
-            else {
-                servo_ghidaj.setPosition(0.5);
-                intake.setPower(0);
-            }
-            if (gamepad1.dpad_left) {
+            if (gamepad2.dpad_left) { //intake forward
                 intake.setPower(1);
+                //if (fullIntake)
+                    servo_ghidaj.setPosition(0);
+            }
+            else if (gamepad2.dpad_right) { //intake reverse
+                intake.setPower(-1);
+                //if (fullIntake)
+                    servo_ghidaj.setPosition(1);
             } else {
                 intake.setPower(0);
+                servo_ghidaj.setPosition(0.5);
             }
+            /**
+             * ---------------------------------------------------------
+             */
         }
     }
 
@@ -128,11 +187,10 @@ public class miscaregenerala extends LinearOpMode {
         final double v3 = (r * Math.sin(robotAngle)) + rightX;
         final double v4 = (r * Math.cos(robotAngle)) - rightX;
 
-
         stangafata.setPower(v1);
-        dreaptafata.setPower(-v2);
+        dreaptafata.setPower(v2);
         stangaspate.setPower(v3);
-        dreaptaspate.setPower(-v4);
+        dreaptaspate.setPower(v4);
     }
 
 }
