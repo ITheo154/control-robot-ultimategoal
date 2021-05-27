@@ -1,16 +1,23 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
 @TeleOp
 public class miscaregenerala extends LinearOpMode {
     DcMotor brat;
     Servo servo_brat;
 
+    private BNO055IMU imu;
 
     Servo servo_rampa;
 
@@ -26,6 +33,7 @@ public class miscaregenerala extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        initGyro();
         stangafata = hardwareMap.dcMotor.get("stangafata");         // hub 1 port 0
         dreaptafata = hardwareMap.dcMotor.get("dreaptafata");       // hub 1 port 1
         stangaspate = hardwareMap.dcMotor.get("stangaspate");       // hub 1 port 2
@@ -48,6 +56,12 @@ public class miscaregenerala extends LinearOpMode {
         dreaptafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         stangaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dreaptaspate.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        //CALIBRARE GYRO START
+        while (!isStopRequested() && !imu.isGyroCalibrated()) {
+            sleep(50);
+            idle();
+        }
 
         waitForStart();
         double slower = 1;
@@ -95,7 +109,8 @@ public class miscaregenerala extends LinearOpMode {
              */
             if (gamepad2.x) {
                 //if (lansator.getPower() == 0) {
-                lansator.setPower(0.65);
+                lansator.setPower(0.61);
+
                 //} else if (lansator.getPower() <= 0.7) {
                 //    lansator.setPower(lansator.getPower() + 0.1);
                 //}
@@ -126,7 +141,6 @@ public class miscaregenerala extends LinearOpMode {
             }
 
             telemetry.addData("Brat", brat.getCurrentPosition());
-            telemetry.update();
 
             /**
              * Rampa
@@ -161,7 +175,24 @@ public class miscaregenerala extends LinearOpMode {
             /**
              * ---------------------------------------------------------
              */
+            telemetry.addData("X", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).thirdAngle);
+            telemetry.addData("Z", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle);
+            telemetry.addData("Y", imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).secondAngle);
+            telemetry.update();
         }
+    }
+
+    public void initGyro(){
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        //parameters.calibrationDataFile = "GyroCal.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = false;
+        parameters.loggingTag          = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        //
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
     }
 
     /**

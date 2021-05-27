@@ -95,7 +95,6 @@ public class autonom extends LinearOpMode {
          **/
         if (tfod != null) {
             tfod.activate();
-
             // The TensorFlow software will scale the input images from the camera to a lower resolution.
             // This can result in lower detection accuracy at longer distances (> 55cm or 22").
             // If your target is at distance greater than 50 cm (20") you can adjust the magnification value
@@ -116,10 +115,10 @@ public class autonom extends LinearOpMode {
 
         servo_brat= hardwareMap.servo.get("servobrat");
 
-        dreaptafata.setDirection(DcMotorSimple.Direction.REVERSE);
-        dreaptaspate.setDirection(DcMotorSimple.Direction.REVERSE);
-        stangafata.setDirection(DcMotorSimple.Direction.FORWARD);
-        stangaspate.setDirection(DcMotorSimple.Direction.FORWARD);
+        dreaptafata.setDirection(DcMotorSimple.Direction.FORWARD);
+        dreaptaspate.setDirection(DcMotorSimple.Direction.FORWARD);
+        stangafata.setDirection(DcMotorSimple.Direction.REVERSE);
+        stangaspate.setDirection(DcMotorSimple.Direction.REVERSE);
 
         stangafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         dreaptafata.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -140,51 +139,118 @@ public class autonom extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-            doSmartStuff();
-            if (!didFunctionRun) {
-                // square A - 17 cm strafe dreapta speed 0.5  forward 180 cm speed 0.8
-                strafeToPosition(-30, 0.8);
-                moveToPosition(-220, 0.8);
-
-                moveMotorToPosition(-230, 1);
-                sleep(50);
-                servo_brat.setPosition(0.65);
-                sleep(50);
-                moveMotorToPosition(230, 1);
-                servo_brat.setPosition(0);
-                didFunctionRun = true;
-            }
+            if (!didFunctionRun)
+                doSmartStuff();
+            else requestOpModeStop();
         }
         if (tfod != null) {
             tfod.shutdown();
         }
     }
 
+    private void cazA() {
+        servo_brat.setPosition(0);
+        strafeToPosition(-30, 0.5);
+        moveToPosition(-170, 0.5);
+        sleep(50);
+        strafeToPosition(30, 0.5);
+        turnWithGyro(-35, -0.5);
+        moveToPosition(-20, 0.5);
+        sleep(50);
+        moveMotorToPosition(-65, 1);
+        moveMotorToPosition(brat.getCurrentPosition() - 20, 0.5);
+        sleep(500);
+        servo_brat.setPosition(0.65);
+        sleep(50);
+        moveMotorToPosition(10, .85);
+        servo_brat.setPosition(0);
+        moveToPosition(15, 0.5);
+        turnWithGyro(-30, 0.5);
+        moveToPosition(-20, 0.5);
+        strafeToPosition(40, 0.5);
+
+    }
+
+    private void cazB() {
+        servo_brat.setPosition(0);
+        moveToPosition(-200, 0.85);
+        sleep(50);
+        turnWithGyro(-35, 0.65);
+        sleep(50);
+        moveMotorToPosition(-65, 1);
+        moveMotorToPosition(brat.getCurrentPosition() - 20, 0.5);
+        sleep(500);
+        servo_brat.setPosition(0.65);
+        sleep(50);
+        moveMotorToPosition(10, .85);
+        servo_brat.setPosition(0);
+
+        
+    }
+
+    private void cazC(){
+        servo_brat.setPosition(0);
+        strafeToPosition(-30, 0.5);
+        moveToPosition(-266, 0.85);
+        sleep(50);
+        strafeToPosition(30, 0.5);
+        turnWithGyro(-35, -0.5);
+        moveToPosition(-20, 0.5);
+        sleep(50);
+        moveMotorToPosition(-65, 1);
+        moveMotorToPosition(brat.getCurrentPosition() - 20, 0.5);
+        sleep(500);
+        servo_brat.setPosition(0.65);
+        sleep(50);
+        moveMotorToPosition(10, .85);
+        servo_brat.setPosition(0);
+        moveToPosition(15, 0.5);
+        turnWithGyro(-30, 0.5);
+        moveToPosition(-20, 0.5);
+        strafeToPosition(40, 0.5);
+    }
+
+    private boolean gotEm = false;
     private void doSmartStuff() {
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-            if (updatedRecognitions != null) {
+            if (updatedRecognitions != null && !gotEm) {
                 telemetry.addData("# Object Detected", updatedRecognitions.size());
                 // step through the list of recognitions and display boundary info.
                 int i = 0;
-                for (Recognition recognition : updatedRecognitions) {
-                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                            recognition.getLeft(), recognition.getTop());
-                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                            recognition.getRight(), recognition.getBottom());
+                gotEm = true;
+                if (updatedRecognitions.size() == 1) {
+                    Recognition recognition = updatedRecognitions.get(0);
+                    telemetry.addData("Recon", recognition.getLabel());
+                    telemetry.update();
+                    switch (recognition.getLabel()) {
+                        case LABEL_FIRST_ELEMENT:
+                            //cazC
+                            cazC();
+                            //
+                            didFunctionRun = true;
+                            break;
+                        case LABEL_SECOND_ELEMENT:
+                            //cazB
+                            cazB();
+                            //
+                            didFunctionRun = true;
+                            break;
+                    }
+                } else {
+                    cazA();
+                    didFunctionRun = true;
                 }
-                telemetry.update();
-            }
+            } else requestOpModeStop();
         }
     }
 
     private void DoAutonomusStuff(boolean didFunctionRun){
         if(!didFunctionRun){
             // position 1(A) pos 2(B) pos 3(C)
-
+            doSmartStuff();
 
             didFunctionRun = true;
 
@@ -233,11 +299,11 @@ public class autonom extends LinearOpMode {
     }
 
     public void moveMotorToPosition(int position, double speed) {
-        brat.setTargetPosition(brat.getCurrentPosition() + position);
+        brat.setTargetPosition(position);
         brat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        brat.setPower(speed);
         while (brat.isBusy()) {}
         brat.setPower(0);
-        return;
     }
 
     /*
@@ -259,14 +325,14 @@ public class autonom extends LinearOpMode {
         if (speedDirection > 0){//set target positions
             if (degrees > 10){
                 first = (degrees - 10) + devertify(yaw);
-            } else{
+            } else {
                 first = devertify(yaw);
             }
             second = degrees + devertify(yaw);
-        }else{
+        } else {
             if (degrees > 10){
                 first = devertify(-(degrees - 10) + devertify(yaw));
-            } else{
+            } else {
                 first = devertify(yaw);
             }
             second = devertify(-degrees + devertify(yaw));
@@ -430,74 +496,6 @@ public class autonom extends LinearOpMode {
         stangaspate.setDirection(DcMotorSimple.Direction.REVERSE);
         dreaptaspate.setDirection(DcMotorSimple.Direction.FORWARD);
 
-
-    }
-
-    public void deliverWobble(int position){
-
-        if (position == 1){
-            telemetry.addLine("position1");
-            moveToPosition(180, 1);
-            strafeToPosition(50, 0.8);
-            servo_brat.setPosition(0);
-            brat.setPower(1);
-            sleep(200);
-
-            // go to ring area 
-            moveToPosition(-88, 1);
-            strafeToPosition(87, 0.8);
-            moveToPosition(83, 0.75);
-        }
-        else if (position == 2){
-            moveToPosition(230, 1);
-            strafeToPosition(-20, 0.8);
-            servo_brat.setPosition(0);
-            brat.setPower(1);
-            sleep(200);
-
-            // go to ring area
-            strafeToPosition(56, 0.8);
-            moveToPosition(-116, 1);
-            strafeToPosition(86, 0.8);
-            moveToPosition(84, 1);
-
-        }
-        else if (position == 3){
-            moveToPosition(320, 1);
-            strafeToPosition(50,0.8);
-            servo_brat.setPosition(0);
-            brat.setPower(1);
-            sleep(100);
-        }
-
-
-    }
-
-    // public void shootHighGoal(){
-    //     rampa.setPower(1);
-    //     moveToPosition(65, 1);
-    //     moveToPosition(85, 1);
-    //     for (int i = 0; i<=3; i++) {
-    //         lansator.setPower(1);
-    //         sleep(20);
-    //     }
-
-    // }
-
-    public void shootPowershot(){
-        intake.setPower(1);
-
-        for (int j = 0; j<=3; j++) {
-            lansator.setPower(1);
-            strafeToPosition(10, 0.8);
-            sleep(10);
-        }
-
-    }
-
-    public void navigateToStart(){
-        moveToPosition(202, 1);
-        strafeToPosition(10, 0.8);
 
     }
 
