@@ -59,6 +59,7 @@ public class autonom extends LinearOpMode {
     //servos
     Servo servo_brat;
     Servo servo_rampa;
+    Servo servo_ghidaj;
 
     //hex motors
     DcMotor brat;
@@ -113,7 +114,9 @@ public class autonom extends LinearOpMode {
 
         brat= hardwareMap.dcMotor.get("brat");
 
-        servo_brat= hardwareMap.servo.get("servobrat");
+        servo_brat = hardwareMap.servo.get("servobrat");
+        servo_ghidaj = hardwareMap.servo.get("servoghidaj");
+        servo_rampa = hardwareMap.servo.get("servorampa");
 
         dreaptafata.setDirection(DcMotorSimple.Direction.FORWARD);
         dreaptaspate.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -151,63 +154,76 @@ public class autonom extends LinearOpMode {
     private void cazA() {
         servo_brat.setPosition(0);
         strafeToPosition(-30, 0.5);
-        moveToPosition(-170, 0.5);
+        moveToPosition(-170, 1);
         sleep(50);
         strafeToPosition(30, 0.5);
         turnWithGyro(-35, -0.5);
         moveToPosition(-20, 0.5);
-        sleep(50);
-        moveMotorToPosition(-65, 1);
-        moveMotorToPosition(brat.getCurrentPosition() - 20, 0.5);
-        sleep(500);
-        servo_brat.setPosition(0.65);
-        sleep(50);
-        moveMotorToPosition(10, .85);
-        servo_brat.setPosition(0);
-        moveToPosition(15, 0.5);
-        turnWithGyro(-30, 0.5);
+        dropWobble();
+        moveToPosition(20, 0.5);
+        turnWithGyro(-35, 0.5);
+        strafeToPosition(40, 0.5);
+        turnWithGyro(-180, -0.6);
         moveToPosition(-20, 0.5);
         strafeToPosition(40, 0.5);
-
+        // -90, -178, 0
+        //lansator.setPower();
     }
 
     private void cazB() {
         servo_brat.setPosition(0);
-        moveToPosition(-200, 0.85);
+        strafeToPosition(-30, 0.5);
+        moveToPosition(-260, 1);
         sleep(50);
-        turnWithGyro(-35, 0.65);
-        sleep(50);
-        moveMotorToPosition(-65, 1);
-        moveMotorToPosition(brat.getCurrentPosition() - 20, 0.5);
-        sleep(500);
-        servo_brat.setPosition(0.65);
-        sleep(50);
-        moveMotorToPosition(10, .85);
-        servo_brat.setPosition(0);
+        strafeToPosition(80, 0.5);
+        turnWithGyro(-10, -0.5);
+        //moveToPosition(-20, 0.5);
+        dropWobble();
+        moveToPosition(50, 0.5);
+        strafeToPosition(40, 0.5);
 
-        
     }
 
-    private void cazC(){
+    private void cazC() {
         servo_brat.setPosition(0);
         strafeToPosition(-30, 0.5);
-        moveToPosition(-266, 0.85);
+        moveToPosition(-350, 1);
         sleep(50);
-        strafeToPosition(30, 0.5);
-        turnWithGyro(-35, -0.5);
-        moveToPosition(-20, 0.5);
+        strafeToPosition(30, 0.7);
+        turnWithGyro(-27, -0.7);
+        dropWobble();
+        turnWithGyro(-27, 1);
+        strafeToPosition(35, 0.7);
+        moveToPosition(165, 1);
+        turnWithGyro(-170, -1);
+        strafeToPosition(40, 0.5);
+        turnWithGyro(-10, -0.5);
+        dropBridge();
+        launch();
+    }
+
+    private void launch() {
+        intake.setPower(1);
+        servo_ghidaj.setPosition(0);
+        sleep(3500);
+    }
+
+    private void dropBridge() {
+        lansator.setPower(0.61);
+        servo_rampa.setPosition(1);
+        sleep(2600);
+        servo_rampa.setPosition(0.5);
+    }
+
+    private void dropWobble() {
         sleep(50);
-        moveMotorToPosition(-65, 1);
+        moveMotorToPosition(-70, 1);
         moveMotorToPosition(brat.getCurrentPosition() - 20, 0.5);
         sleep(500);
         servo_brat.setPosition(0.65);
         sleep(50);
         moveMotorToPosition(10, .85);
         servo_brat.setPosition(0);
-        moveToPosition(15, 0.5);
-        turnWithGyro(-30, 0.5);
-        moveToPosition(-20, 0.5);
-        strafeToPosition(40, 0.5);
     }
 
     private boolean gotEm = false;
@@ -215,34 +231,23 @@ public class autonom extends LinearOpMode {
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
+            sleep(750);
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null && !gotEm) {
                 telemetry.addData("# Object Detected", updatedRecognitions.size());
-                // step through the list of recognitions and display boundary info.
-                int i = 0;
                 gotEm = true;
                 if (updatedRecognitions.size() == 1) {
                     Recognition recognition = updatedRecognitions.get(0);
                     telemetry.addData("Recon", recognition.getLabel());
                     telemetry.update();
-                    switch (recognition.getLabel()) {
-                        case LABEL_FIRST_ELEMENT:
-                            //cazC
-                            cazC();
-                            //
-                            didFunctionRun = true;
-                            break;
-                        case LABEL_SECOND_ELEMENT:
-                            //cazB
-                            cazB();
-                            //
-                            didFunctionRun = true;
-                            break;
-                    }
+                    if (recognition.getLabel().equals(LABEL_SECOND_ELEMENT)) {
+                        cazB();
+                    } else
+                        cazC();
                 } else {
                     cazA();
-                    didFunctionRun = true;
                 }
+                didFunctionRun = true;
             } else requestOpModeStop();
         }
     }
@@ -510,7 +515,6 @@ public class autonom extends LinearOpMode {
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
-
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
